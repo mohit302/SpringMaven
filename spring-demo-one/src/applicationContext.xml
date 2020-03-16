@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- load the properties file: sports.properties -->
+    <context:property-placeholder location="classpath:sports.properties"/>
+    
+    <!-- Define your beans here -->
+    <bean id="myLoggerConfig" class="com.mohit.springdemo.MyLoggerConfig" init-method="initLogger">
+    	<property name="rootLoggerLevel" value="FINE" />
+    	<property name="printedLoggerLevel" value="FINE"/>
+    </bean>
+    
+    <!-- define the dependency -->
+    
+    <bean id="myFortuneService"
+    	class="com.mohit.springdemo.HappyFortuneService">
+    </bean>
+    
+    <bean id="myRandomFortuneService"
+    	class="com.mohit.springdemo.RandomFortuneService">
+    </bean>
+    
+    <bean id="myTCoach"
+    	class="com.mohit.springdemo.TennisCoach">
+    	<!-- constructor injection -->
+    	<constructor-arg ref="myRandomFortuneService" />
+    
+    </bean>
+    
+    <bean id="myCoach" 
+    	class="com.mohit.springdemo.BaseballCoach">
+    	<!-- set up constructor injection -->
+    	<constructor-arg ref="myFortuneService" />
+    </bean>
+    
+    <bean id="myCCoach" 
+    	class="com.mohit.springdemo.CricketCoach">
+    	<!-- Constructor injection 
+    	<constructor-arg ref="myFortune"/> 
+    	-->
+    	
+    	<!-- Setter injection -->
+    	<property name="fortuneService" ref="myFortuneService" />
+    	<!-- 
+    	<property name="emailAddress" value="twit@go.co.in"/>
+    	<property name="team" value="CSK"/>
+    	 -->
+    	<property name="emailAddress" value="${foo.email}"/>
+    	<property name="team" value="${foo.team}"/>
+    
+    </bean>
+    
+</beans>
+
+
+
+
+
